@@ -12,38 +12,35 @@ import java.util.UUID
 class CrimeHolder(
     private val binding: ListItemCrimeBinding
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(crime: Crime, onCrimeClicked: (crimeId: UUID) -> Unit) {
-        binding.crimeTitle.text = crime.title
-        binding.crimeDate.text = crime.date.toString()
+    fun bind(expense: Expense, onCrimeClicked: (crimeId: UUID) -> Unit) {
+        binding.expenseType.text = expense.expenseType.toString()
+        binding.crimeDate.text = expense.date.toString()
+        binding.amount.text= expense.amount.toString()
 
         binding.root.setOnClickListener {
-            onCrimeClicked(crime.id)
+            onCrimeClicked(expense.id)
         }
 
-        binding.crimeSolved.visibility = if (crime.isSolved) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+
     }
 }
 
 class CrimeListAdapter(
-    private val crimes: List<Crime>,
+    private val expenses: List<Expense>,
     private val onCrimeClicked: (crimeId: UUID) -> Unit
 ) : RecyclerView.Adapter<CrimeHolder>() {
 
-    private var filteredItems: List<Crime> = crimes
+    private var filteredItems: List<Expense> = expenses
 
     fun filterByType(type: Int) {
-        filteredItems = crimes.filter { item ->
+        filteredItems = expenses.filter { item ->
             item.expenseType == type
         }
         notifyDataSetChanged()
     }
 
     fun filterByDate(startDate: Date, endDate: Date) {
-        filteredItems = crimes.filter { item ->
+        filteredItems = expenses.filter { item ->
             val itemDate = item.date
             itemDate in startDate..endDate
         }
@@ -52,7 +49,7 @@ class CrimeListAdapter(
     }
 
     fun removeFilter(){
-        filteredItems=crimes
+        filteredItems=expenses
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(

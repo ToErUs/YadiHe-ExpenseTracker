@@ -15,8 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bignerdranch.android.criminalintent.databinding.FragmentCrimeDetailBinding
-import kotlinx.coroutines.flow.collect
+import com.bignerdranch.android.criminalintent.databinding.FragmentExpenseDetailBinding
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -25,7 +24,7 @@ private const val TAG = "CrimeDetailFragment"
 
 class CrimeDetailFragment : Fragment() {
 
-    private var _binding: FragmentCrimeDetailBinding? = null
+    private var _binding: FragmentExpenseDetailBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -47,13 +46,11 @@ class CrimeDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val crime = Crime(
+        val expense = Expense(
             id = UUID.randomUUID(),
             title = "",
             date = Date(),
-            isSolved = false,
-            newsTitle = "News Title",
-            newsText = "News Text",
+            amount = 0,
             expenseType = 0
         )
 
@@ -66,7 +63,7 @@ class CrimeDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding =
-            FragmentCrimeDetailBinding.inflate(inflater, container, false)
+            FragmentExpenseDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -99,9 +96,15 @@ class CrimeDetailFragment : Fragment() {
         }
 
         binding.apply {
-            crimeTitle.doOnTextChanged { text, _, _, _ ->
+            expenseAmount.doOnTextChanged { text, _, _, _ ->
+                val amount = if (text.isNullOrEmpty()) {
+                    0 // Set amount to 0 if text is null or empty
+                } else {
+                    Integer.parseInt(text.toString()) // Parse the text to an integer
+                }
+
                 crimeDetailViewModel.updateCrime { oldCrime ->
-                    oldCrime.copy(title = text.toString())
+                    oldCrime.copy(amount = amount)
                 }
             }
 
@@ -111,17 +114,17 @@ class CrimeDetailFragment : Fragment() {
                 isEnabled = false
             }
 
-            crimeSolved.setOnCheckedChangeListener { _, isChecked ->
-                crimeDetailViewModel.updateCrime { oldCrime ->
-                    oldCrime.copy(isSolved = isChecked)
-                }
-            }
+//            crimeSolved.setOnCheckedChangeListener { _, isChecked ->
+//                crimeDetailViewModel.updateCrime { oldCrime ->
+//                    oldCrime.copy(isSolved = isChecked)
+//                }
+//            }
 
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                crimeDetailViewModel.crime.collect { crime ->
+                crimeDetailViewModel.expense.collect { crime ->
                     crime?.let { updateUi(it) }
                 }
             }
@@ -140,14 +143,18 @@ class CrimeDetailFragment : Fragment() {
         _binding = null
     }
 
-    private fun updateUi(crime: Crime) {
+    private fun updateUi(expense: Expense) {
         binding.apply {
-            if (crimeTitle.text.toString() != crime.title) {
-                crimeTitle.setText(crime.title)
+            if(expenseAmount.text.toString()==""){
+                expenseAmount.setText(expense.amount.toString())
+            }else{
+                if (!expenseAmount.text.toString().matches("-?\\d+".toRegex())||Integer.parseInt(expenseAmount.text.toString()) != expense.amount) {
+
+                }
             }
-            crimeDate.text = crime.date.toString()
-            crimeSolved.isChecked = crime.isSolved
-            spinnerCrimeType.setSelection(crime.expenseType)
+
+            crimeDate.text = expense.date.toString()
+            spinnerCrimeType.setSelection(expense.expenseType)
 
         }
     }

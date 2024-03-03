@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">CriminalIntent</string>
-    <string name="crime_title_hint">Enter a title for the crime.</string>
-    <string name="crime_title_label">Title</string>
-    <string name="crime_details_label">Details</string>
+    <string name="expense_amount_hint">Enter the amount of the expense.</string>
+    <string name="expense_amount_label">Amount</string>
+    <string name="crime_type_label">Type</string>
     <string name="crime_solved_label">Solved</string>
     <string name="button_add">add</string>
     <string-array name="crime_types_array">

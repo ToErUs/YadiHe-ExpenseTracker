@@ -6,12 +6,10 @@ import java.util.UUID
 import java.util.Date
 
 @Entity
-data class Crime(
+data class Expense(
     @PrimaryKey val id: UUID,
     val title: String,
     val date: Date,
-    val isSolved: Boolean,
-    val newsTitle:String,
-    val newsText:String,
+    val amount: Int,
     val expenseType:Int
 )

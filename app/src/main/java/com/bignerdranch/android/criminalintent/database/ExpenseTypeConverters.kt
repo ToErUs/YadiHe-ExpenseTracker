@@ -3,7 +3,7 @@ package com.bignerdranch.android.criminalintent.database
 import androidx.room.TypeConverter
 import java.util.Date
 
-class CrimeTypeConverters {
+class ExpenseTypeConverters {
     @TypeConverter
     fun fromDate(date: Date): Long {
         return date.time

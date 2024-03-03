@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/crime_title"
+        android:id="@+id/amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:text="Crime Title"
         android:textAppearance="?attr/textAppearanceHeadline6"
-        app:layout_constraintEnd_toStartOf="@+id/crime_solved"
+        app:layout_constraintEnd_toStartOf="@+id/expense_type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,18 +27,17 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="Crime Date"
-        app:layout_constraintEnd_toStartOf="@+id/crime_solved"
+        app:layout_constraintEnd_toStartOf="@+id/expense_type"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/crime_title" />
+        app:layout_constraintTop_toBottomOf="@+id/amount" />
 
-    <ImageView
-        android:id="@+id/crime_solved"
+    <TextView
+        android:id="@+id/expense_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_solved" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

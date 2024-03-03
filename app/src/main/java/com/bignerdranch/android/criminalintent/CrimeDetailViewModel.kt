@@ -13,29 +13,29 @@ import java.util.UUID
 class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
     private val crimeRepository = CrimeRepository.get()
 
-    private val _crime: MutableStateFlow<Crime?> = MutableStateFlow(null)
-    val crime: StateFlow<Crime?> = _crime.asStateFlow()
+    private val _expense: MutableStateFlow<Expense?> = MutableStateFlow(null)
+    val expense: StateFlow<Expense?> = _expense.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _crime.value = crimeRepository.getCrime(crimeId)
+            _expense.value = crimeRepository.getCrime(crimeId)
         }
     }
 
-    fun updateCrime(onUpdate: (Crime) -> Crime) {
-        _crime.update { oldCrime ->
+    fun updateCrime(onUpdate: (Expense) -> Expense) {
+        _expense.update { oldCrime ->
             oldCrime?.let { onUpdate(it) }
         }
     }
 
     suspend  fun deleteCrime(){
-        _crime.value?.id?.let { crimeRepository.deleteCrime(it) }
+        _expense.value?.id?.let { crimeRepository.deleteCrime(it) }
 
     }
 
     override fun onCleared() {
         super.onCleared()
-        crime.value?.let { crimeRepository.updateCrime(it) }
+        expense.value?.let { crimeRepository.updateCrime(it) }
     }
 }
 
