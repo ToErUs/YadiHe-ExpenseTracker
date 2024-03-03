@@ -12,5 +12,6 @@ data class Crime(
     val date: Date,
     val isSolved: Boolean,
     val newsTitle:String,
-    val newsText:String
+    val newsText:String,
+    val expenseType:Int
 )

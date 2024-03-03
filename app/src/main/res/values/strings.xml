@@ -5,4 +5,17 @@
     <string name="crime_details_label">Details</string>
     <string name="crime_solved_label">Solved</string>
     <string name="button_add">add</string>
+    <string-array name="crime_types_array">
+        <item>Theft</item>
+        <item>Assault</item>
+        <item>Vandalism</item>
+        <item>Burglary</item>
+    </string-array>
+    <string-array name="crime_filter_array">
+        <item>All</item>
+        <item>Theft</item>
+        <item>Assault</item>
+        <item>Vandalism</item>
+        <item>Burglary</item>
+    </string-array>
 </resources>

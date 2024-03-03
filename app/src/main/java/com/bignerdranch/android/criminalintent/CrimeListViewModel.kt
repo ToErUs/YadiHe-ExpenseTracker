@@ -31,7 +31,7 @@ class CrimeListViewModel : ViewModel() {
     fun addEmptyCrime(onCrimeAdded: (UUID) -> Unit) {
         val newID = UUID.randomUUID()
         viewModelScope.launch {
-            crimeRepository.insertCrime(Crime(id = newID, title = "title", Date(), isSolved = false, newsTitle = "title", newsText = "text"))
+            crimeRepository.insertCrime(Crime(id = newID, title = "title", Date(), isSolved = false, newsTitle = "title", newsText = "text", expenseType = 0))
             Log.d("database operation", "insert done")
             // Notify the caller that the crime has been added
             onCrimeAdded(newID)

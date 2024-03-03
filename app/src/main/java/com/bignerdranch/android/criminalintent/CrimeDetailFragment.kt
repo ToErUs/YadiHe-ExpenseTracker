@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -36,6 +37,13 @@ class CrimeDetailFragment : Fragment() {
         CrimeDetailViewModelFactory(args.crimeId)
     }
 
+    val typeToIntMap = mapOf(
+        "Theft" to 0,
+        "Assault" to 1,
+        "Vandalism" to 2,
+        "Burglary" to 3
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,7 +53,8 @@ class CrimeDetailFragment : Fragment() {
             date = Date(),
             isSolved = false,
             newsTitle = "News Title",
-            newsText = "News Text"
+            newsText = "News Text",
+            expenseType = 0
         )
 
         Log.d(TAG, "The crime ID is: ${args.crimeId}")
@@ -63,11 +72,30 @@ class CrimeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         binding.delete.setOnClickListener{
             Toast.makeText(requireContext(), "Delete clicked", Toast.LENGTH_SHORT).show()
             deleteCrimeAndNavigateBack()
+        }
 
+        binding.spinnerCrimeType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem:String = parent?.getItemAtPosition(position).toString()
+                Log.d("Spiner", "The crime type is: $selectedItem")
+                crimeDetailViewModel.updateCrime { oldCrime ->
+                    oldCrime.copy(expenseType = typeToIntMap[selectedItem]?:0)
+                }
+            }
 
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Do nothing
+            }
         }
 
         binding.apply {
@@ -76,6 +104,8 @@ class CrimeDetailFragment : Fragment() {
                     oldCrime.copy(title = text.toString())
                 }
             }
+
+
 
             crimeDate.apply {
                 isEnabled = false
@@ -86,6 +116,7 @@ class CrimeDetailFragment : Fragment() {
                     oldCrime.copy(isSolved = isChecked)
                 }
             }
+
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -116,6 +147,8 @@ class CrimeDetailFragment : Fragment() {
             }
             crimeDate.text = crime.date.toString()
             crimeSolved.isChecked = crime.isSolved
+            spinnerCrimeType.setSelection(crime.expenseType)
+
         }
     }
 }

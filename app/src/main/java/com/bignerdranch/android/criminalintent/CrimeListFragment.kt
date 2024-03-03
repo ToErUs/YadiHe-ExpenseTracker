@@ -1,10 +1,13 @@
 package com.bignerdranch.android.criminalintent
 
+import android.app.DatePickerDialog
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,12 +32,22 @@ class CrimeListFragment : Fragment() {
 
     private val crimeListViewModel: CrimeListViewModel by viewModels()
 
+    val typeToIntMap = mapOf(
+        "Theft" to 0,
+        "Assault" to 1,
+        "Vandalism" to 2,
+        "Burglary" to 3
+    )
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentCrimeListBinding.inflate(inflater, container, false)
+        binding.spinnerTypeFilter.setSelection(0)
 
         binding.crimeRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.buttonAdd.setOnClickListener{
@@ -49,6 +62,74 @@ class CrimeListFragment : Fragment() {
                 )
             }
 
+        }
+        binding.textInputDate.setOnClickListener{
+
+            val calendar = Calendar.getInstance()
+            val year = calendar.get(Calendar.YEAR)
+            val month = calendar.get(Calendar.MONTH)
+            val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+
+
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                    // Update the TextInputEditText with the selected date
+                    binding.textInputDate.setText("$year-${monthOfYear + 1}-$dayOfMonth")
+
+                    val selectedDate = Calendar.getInstance().apply {
+                        set(year, monthOfYear, dayOfMonth)
+                        set(Calendar.HOUR_OF_DAY, 0)
+                        set(Calendar.MINUTE, 0)
+                        set(Calendar.SECOND, 0)
+                        set(Calendar.MILLISECOND, 0)
+                    }
+
+                    val startTime = selectedDate.time
+                    selectedDate.apply {
+                        set(Calendar.HOUR_OF_DAY, 23)
+                        set(Calendar.MINUTE, 59)
+                        set(Calendar.SECOND, 59)
+                        set(Calendar.MILLISECOND, 999)
+                    }
+
+                    binding.spinnerTypeFilter.setSelection(0)
+                    val endTime = selectedDate.time
+                    val adapter = binding.crimeRecyclerView.adapter as? CrimeListAdapter
+                    (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.filterByDate(startTime,endTime)
+                },
+                year,
+                month,
+                dayOfMonth
+            )
+            datePickerDialog.show()
+        }
+        binding.spinnerTypeFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                binding.textInputDate.setText("")
+                val selectedType = parent?.getItemAtPosition(position).toString()
+
+                // Call a function to filter data based on the selected type
+                val adapter = binding.crimeRecyclerView.adapter as? CrimeListAdapter
+                if(selectedType=="All"){
+                    (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.removeFilter()
+                }else{
+                    (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.filterByType(typeToIntMap[selectedType]?:0)
+                }
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Handle the case where no item is selected (if needed)
+            }
+        }
+
+        binding.clearFilter.setOnClickListener {
+            binding.textInputDate.setText("") // Set the text to empty string
+            val adapter = binding.crimeRecyclerView.adapter as? CrimeListAdapter
+            (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.removeFilter()
+            binding.spinnerTypeFilter.setSelection(0)
         }
 
         return binding.root
