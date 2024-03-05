@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 
-class CrimeListViewModel : ViewModel() {
-    private val crimeRepository = CrimeRepository.get()
+class ExpenseListViewModel : ViewModel() {
+    private val expenseRepository = ExpenseRepository.get()
 
     private val _crimes: MutableStateFlow<List<Expense>> = MutableStateFlow(emptyList())
     val crimes: StateFlow<List<Expense>>
@@ -21,7 +21,7 @@ class CrimeListViewModel : ViewModel() {
 
         viewModelScope.launch {
             //crimeRepository.insertCrime(Crime(id = UUID.randomUUID(), title = "title", Date(), isSolved = false, newsTitle = "title", newsText = "text"))
-            crimeRepository.getCrimes().collect {
+            expenseRepository.getCrimes().collect {
                 _crimes.value = it
             }
         }
@@ -30,7 +30,7 @@ class CrimeListViewModel : ViewModel() {
     fun addEmptyCrime(onCrimeAdded: (UUID) -> Unit) {
         val newID = UUID.randomUUID()
         viewModelScope.launch {
-            crimeRepository.insertCrime(Expense(id = newID, title = "title", Date(), amount = 0, expenseType = 0))
+            expenseRepository.insertCrime(Expense(id = newID, title = "title", Date(), amount = 0, expenseType = 0))
             Log.d("database operation", "insert done")
             // Notify the caller that the crime has been added
             onCrimeAdded(newID)

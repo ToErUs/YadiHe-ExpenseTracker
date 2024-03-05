@@ -40,13 +40,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="9"
-        tools:listitem="@layout/list_item_crime" />
+        tools:listitem="@layout/list_item_expense" />
     <Button
         android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Add Crime"
+        android:text="Add Expense"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
 

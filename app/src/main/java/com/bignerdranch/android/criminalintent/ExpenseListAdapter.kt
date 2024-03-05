@@ -5,17 +5,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.android.criminalintent.databinding.ListItemCrimeBinding
+import com.bignerdranch.android.criminalintent.databinding.ListItemExpenseBinding
 import java.util.Date
 import java.util.UUID
 
 class CrimeHolder(
-    private val binding: ListItemCrimeBinding
+    private val binding: ListItemExpenseBinding
 ) : RecyclerView.ViewHolder(binding.root) {
+
+    val typeToIntMap = mapOf(
+        // Food, Entertainment, Housing, Utilities, Fuel, Automotive, Misc
+        "Food" to 0,
+        "Entertainment" to 1,
+        "Housing" to 2,
+        "Utilities" to 3,
+        "Fuel" to 4,
+        "Automotive" to 5,
+        "Misc" to 6
+    )
     fun bind(expense: Expense, onCrimeClicked: (crimeId: UUID) -> Unit) {
-        binding.expenseType.text = expense.expenseType.toString()
+        val intToTypeMap = typeToIntMap.entries.associateBy({ it.value }) { it.key }
+
+        binding.expenseType.text = intToTypeMap[expense.expenseType]
         binding.crimeDate.text = expense.date.toString()
         binding.amount.text= expense.amount.toString()
+
 
         binding.root.setOnClickListener {
             onCrimeClicked(expense.id)
@@ -57,7 +71,7 @@ class CrimeListAdapter(
         viewType: Int
     ): CrimeHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
+        val binding = ListItemExpenseBinding.inflate(inflater, parent, false)
         return CrimeHolder(binding)
     }
 

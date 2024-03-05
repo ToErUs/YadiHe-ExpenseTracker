@@ -22,7 +22,7 @@ import java.util.UUID
 
 private const val TAG = "CrimeDetailFragment"
 
-class CrimeDetailFragment : Fragment() {
+class ExpenseDetailFragment : Fragment() {
 
     private var _binding: FragmentExpenseDetailBinding? = null
     private val binding
@@ -30,17 +30,21 @@ class CrimeDetailFragment : Fragment() {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
-    private val args: CrimeDetailFragmentArgs by navArgs()
+    private val args: ExpenseDetailFragmentArgs by navArgs()
 
     private val crimeDetailViewModel: CrimeDetailViewModel by viewModels {
         CrimeDetailViewModelFactory(args.crimeId)
     }
 
     val typeToIntMap = mapOf(
-        "Theft" to 0,
-        "Assault" to 1,
-        "Vandalism" to 2,
-        "Burglary" to 3
+        //Food, Entertainment, Housing, Utilities, Fuel, Automotive, Misc
+        "Food" to 0,
+        "Entertainment" to 1,
+        "Housing" to 2,
+        "Utilities" to 3,
+        "Fuel" to 4,
+        "Automotive" to 5,
+        "Misc" to 6
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

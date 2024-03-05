@@ -2,9 +2,9 @@ package com.bignerdranch.android.criminalintent
 
 import android.app.Application
 
-class CriminalIntentApplication : Application() {
+class ExpenseTrackerApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        CrimeRepository.initialize(this)
+        ExpenseRepository.initialize(this)
     }
 }

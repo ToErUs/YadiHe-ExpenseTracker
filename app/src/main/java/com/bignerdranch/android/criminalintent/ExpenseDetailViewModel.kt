@@ -11,14 +11,14 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
-    private val crimeRepository = CrimeRepository.get()
+    private val expenseRepository = ExpenseRepository.get()
 
     private val _expense: MutableStateFlow<Expense?> = MutableStateFlow(null)
     val expense: StateFlow<Expense?> = _expense.asStateFlow()
 
     init {
         viewModelScope.launch {
-            _expense.value = crimeRepository.getCrime(crimeId)
+            _expense.value = expenseRepository.getCrime(crimeId)
         }
     }
 
@@ -29,13 +29,13 @@ class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
     }
 
     suspend  fun deleteCrime(){
-        _expense.value?.id?.let { crimeRepository.deleteCrime(it) }
+        _expense.value?.id?.let { expenseRepository.deleteCrime(it) }
 
     }
 
     override fun onCleared() {
         super.onCleared()
-        expense.value?.let { crimeRepository.updateCrime(it) }
+        expense.value?.let { expenseRepository.updateCrime(it) }
     }
 }
 

@@ -16,21 +16,20 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bignerdranch.android.criminalintent.databinding.FragmentCrimeListBinding
-import kotlinx.coroutines.flow.collect
+import com.bignerdranch.android.criminalintent.databinding.FragmentExpenseListBinding
 import kotlinx.coroutines.launch
 
 private const val TAG = "CrimeListFragment"
 
-class CrimeListFragment : Fragment() {
+class ExpenseListFragment : Fragment() {
 
-    private var _binding: FragmentCrimeListBinding? = null
+    private var _binding: FragmentExpenseListBinding? = null
     private val binding
         get() = checkNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
-    private val crimeListViewModel: CrimeListViewModel by viewModels()
+    private val expenseListViewModel: ExpenseListViewModel by viewModels()
 
     val typeToIntMap = mapOf(
         "Theft" to 0,
@@ -46,19 +45,19 @@ class CrimeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentCrimeListBinding.inflate(inflater, container, false)
+        _binding = FragmentExpenseListBinding.inflate(inflater, container, false)
         binding.spinnerTypeFilter.setSelection(0)
 
         binding.crimeRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.buttonAdd.setOnClickListener{
             // Handle button click event
             Toast.makeText(requireContext(), "Button clicked", Toast.LENGTH_SHORT).show()
-            crimeListViewModel.addEmptyCrime { newID ->
+            expenseListViewModel.addEmptyCrime { newID ->
                 // Handle the newly inserted crime with its UUID
                 Log.d("Crime added", "UUID: $newID")
                 // Now you can use the newID as needed
                 findNavController().navigate(
-                    CrimeListFragmentDirections.showCrimeDetail(newID)
+                    ExpenseListFragmentDirections.showCrimeDetail(newID)
                 )
             }
 
@@ -140,11 +139,11 @@ class CrimeListFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                crimeListViewModel.crimes.collect { crimes ->
+                expenseListViewModel.crimes.collect { crimes ->
                     binding.crimeRecyclerView.adapter =
                         CrimeListAdapter(crimes) { crimeId ->
                             findNavController().navigate(
-                                CrimeListFragmentDirections.showCrimeDetail(crimeId)
+                                ExpenseListFragmentDirections.showCrimeDetail(crimeId)
                             )
                         }
                 }

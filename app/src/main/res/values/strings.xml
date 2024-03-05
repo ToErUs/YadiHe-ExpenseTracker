@@ -1,21 +1,27 @@
 <resources>
-    <string name="app_name">CriminalIntent</string>
+    <string name="app_name">Expense Tracker</string>
     <string name="expense_amount_hint">Enter the amount of the expense.</string>
     <string name="expense_amount_label">Amount</string>
     <string name="crime_type_label">Type</string>
     <string name="crime_solved_label">Solved</string>
     <string name="button_add">add</string>
     <string-array name="crime_types_array">
-        <item>Theft</item>
-        <item>Assault</item>
-        <item>Vandalism</item>
-        <item>Burglary</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Housing</item>
+        <item>Utilities</item>
+        <item>Fuel</item>
+        <item>Automotive</item>
+        <item>Misc</item>
     </string-array>
     <string-array name="crime_filter_array">
         <item>All</item>
-        <item>Theft</item>
-        <item>Assault</item>
-        <item>Vandalism</item>
-        <item>Burglary</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Housing</item>
+        <item>Utilities</item>
+        <item>Fuel</item>
+        <item>Automotive</item>
+        <item>Misc</item>
     </string-array>
 </resources>

@@ -12,7 +12,7 @@ import java.util.UUID
 
 private const val DATABASE_NAME = "crime-database"
 
-class CrimeRepository private constructor(
+class ExpenseRepository private constructor(
     context: Context,
     private val coroutineScope: CoroutineScope = GlobalScope
 ) {
@@ -48,15 +48,15 @@ class CrimeRepository private constructor(
     }
 
     companion object {
-        private var INSTANCE: CrimeRepository? = null
+        private var INSTANCE: ExpenseRepository? = null
 
         fun initialize(context: Context) {
             if (INSTANCE == null) {
-                INSTANCE = CrimeRepository(context)
+                INSTANCE = ExpenseRepository(context)
             }
         }
 
-        fun get(): CrimeRepository {
+        fun get(): ExpenseRepository {
             return INSTANCE
                 ?: throw IllegalStateException("CrimeRepository must be initialized")
         }
