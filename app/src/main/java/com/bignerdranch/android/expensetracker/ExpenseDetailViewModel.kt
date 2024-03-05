@@ -1,4 +1,4 @@
-package com.bignerdranch.android.criminalintent
+package com.bignerdranch.android.expensetracker
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
+class ExpenseDetailViewModel(crimeId: UUID) : ViewModel() {
     private val expenseRepository = ExpenseRepository.get()
 
     private val _expense: MutableStateFlow<Expense?> = MutableStateFlow(null)
@@ -22,20 +22,20 @@ class CrimeDetailViewModel(crimeId: UUID) : ViewModel() {
         }
     }
 
-    fun updateCrime(onUpdate: (Expense) -> Expense) {
+    fun updateExpense(onUpdate: (Expense) -> Expense) {
         _expense.update { oldCrime ->
             oldCrime?.let { onUpdate(it) }
         }
     }
 
-    suspend  fun deleteCrime(){
-        _expense.value?.id?.let { expenseRepository.deleteCrime(it) }
+    suspend  fun deleteExpense(){
+        _expense.value?.id?.let { expenseRepository.deleteExpense(it) }
 
     }
 
     override fun onCleared() {
         super.onCleared()
-        expense.value?.let { expenseRepository.updateCrime(it) }
+        expense.value?.let { expenseRepository.updateExpense(it) }
     }
 }
 
@@ -43,6 +43,6 @@ class CrimeDetailViewModelFactory(
     private val crimeId: UUID
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return CrimeDetailViewModel(crimeId) as T
+        return ExpenseDetailViewModel(crimeId) as T
     }
 }

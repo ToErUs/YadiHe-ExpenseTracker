@@ -1,16 +1,16 @@
-package com.bignerdranch.android.criminalintent
+package com.bignerdranch.android.expensetracker
 
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
-import com.bignerdranch.android.criminalintent.database.ExpenseDatabase
+import com.bignerdranch.android.expensetracker.database.ExpenseDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-private const val DATABASE_NAME = "crime-database"
+private const val DATABASE_NAME = "expense-database"
 
 class ExpenseRepository private constructor(
     context: Context,
@@ -30,7 +30,7 @@ class ExpenseRepository private constructor(
 
     suspend fun getCrime(id: UUID): Expense = database.crimeDao().getCrime(id)
 
-    fun updateCrime(expense: Expense) {
+    fun updateExpense(expense: Expense) {
         coroutineScope.launch {
             database.crimeDao().updateCrime(expense)
         }
@@ -38,12 +38,12 @@ class ExpenseRepository private constructor(
 
 
 
-    suspend fun insertCrime(expense: Expense) {
+    suspend fun insertExpense(expense: Expense) {
         database.crimeDao().insertCrime(expense)
         Log.d("In RP","Crime inserted")
     }
 
-    suspend fun deleteCrime(id: UUID){
+    suspend fun deleteExpense(id: UUID){
         database.crimeDao().deleteCrimeById(id)
     }
 

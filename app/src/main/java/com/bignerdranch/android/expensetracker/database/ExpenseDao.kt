@@ -1,10 +1,10 @@
-package com.bignerdranch.android.criminalintent.database
+package com.bignerdranch.android.expensetracker.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.bignerdranch.android.criminalintent.Expense
+import com.bignerdranch.android.expensetracker.Expense
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 

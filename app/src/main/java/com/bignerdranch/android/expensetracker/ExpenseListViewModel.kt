@@ -1,4 +1,4 @@
-package com.bignerdranch.android.criminalintent
+package com.bignerdranch.android.expensetracker
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -30,7 +30,7 @@ class ExpenseListViewModel : ViewModel() {
     fun addEmptyCrime(onCrimeAdded: (UUID) -> Unit) {
         val newID = UUID.randomUUID()
         viewModelScope.launch {
-            expenseRepository.insertCrime(Expense(id = newID, title = "title", Date(), amount = 0, expenseType = 0))
+            expenseRepository.insertExpense(Expense(id = newID, title = "title", Date(), amount = 0, expenseType = 0))
             Log.d("database operation", "insert done")
             // Notify the caller that the crime has been added
             onCrimeAdded(newID)

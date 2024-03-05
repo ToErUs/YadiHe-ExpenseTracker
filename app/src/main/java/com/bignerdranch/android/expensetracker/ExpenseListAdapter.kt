@@ -1,15 +1,14 @@
-package com.bignerdranch.android.criminalintent
+package com.bignerdranch.android.expensetracker
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.android.criminalintent.databinding.ListItemExpenseBinding
+import com.bignerdranch.android.expensetracker.databinding.ListItemExpenseBinding
 import java.util.Date
 import java.util.UUID
 
-class CrimeHolder(
+class ExpenseHolder(
     private val binding: ListItemExpenseBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -39,10 +38,10 @@ class CrimeHolder(
     }
 }
 
-class CrimeListAdapter(
+class ExpenseListAdapter(
     private val expenses: List<Expense>,
     private val onCrimeClicked: (crimeId: UUID) -> Unit
-) : RecyclerView.Adapter<CrimeHolder>() {
+) : RecyclerView.Adapter<ExpenseHolder>() {
 
     private var filteredItems: List<Expense> = expenses
 
@@ -69,13 +68,13 @@ class CrimeListAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): CrimeHolder {
+    ): ExpenseHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ListItemExpenseBinding.inflate(inflater, parent, false)
-        return CrimeHolder(binding)
+        return ExpenseHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
+    override fun onBindViewHolder(holder: ExpenseHolder, position: Int) {
         val crime = filteredItems[position]
         holder.bind(crime, onCrimeClicked)
     }

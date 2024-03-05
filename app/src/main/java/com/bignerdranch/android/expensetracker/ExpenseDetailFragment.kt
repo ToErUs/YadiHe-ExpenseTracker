@@ -1,4 +1,4 @@
-package com.bignerdranch.android.criminalintent
+package com.bignerdranch.android.expensetracker
 
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bignerdranch.android.criminalintent.databinding.FragmentExpenseDetailBinding
+import com.bignerdranch.android.expensetracker.databinding.FragmentExpenseDetailBinding
 import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
@@ -32,7 +32,7 @@ class ExpenseDetailFragment : Fragment() {
 
     private val args: ExpenseDetailFragmentArgs by navArgs()
 
-    private val crimeDetailViewModel: CrimeDetailViewModel by viewModels {
+    private val expenseDetailViewModel: ExpenseDetailViewModel by viewModels {
         CrimeDetailViewModelFactory(args.crimeId)
     }
 
@@ -89,7 +89,7 @@ class ExpenseDetailFragment : Fragment() {
             ) {
                 val selectedItem:String = parent?.getItemAtPosition(position).toString()
                 Log.d("Spiner", "The crime type is: $selectedItem")
-                crimeDetailViewModel.updateCrime { oldCrime ->
+                expenseDetailViewModel.updateExpense { oldCrime ->
                     oldCrime.copy(expenseType = typeToIntMap[selectedItem]?:0)
                 }
             }
@@ -107,7 +107,7 @@ class ExpenseDetailFragment : Fragment() {
                     Integer.parseInt(text.toString()) // Parse the text to an integer
                 }
 
-                crimeDetailViewModel.updateCrime { oldCrime ->
+                expenseDetailViewModel.updateExpense { oldCrime ->
                     oldCrime.copy(amount = amount)
                 }
             }
@@ -128,7 +128,7 @@ class ExpenseDetailFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                crimeDetailViewModel.expense.collect { crime ->
+                expenseDetailViewModel.expense.collect { crime ->
                     crime?.let { updateUi(it) }
                 }
             }
@@ -137,7 +137,7 @@ class ExpenseDetailFragment : Fragment() {
 
     private fun deleteCrimeAndNavigateBack() {
         lifecycleScope.launch {
-            crimeDetailViewModel.deleteCrime()
+            expenseDetailViewModel.deleteExpense()
         }
         findNavController().navigateUp()
     }

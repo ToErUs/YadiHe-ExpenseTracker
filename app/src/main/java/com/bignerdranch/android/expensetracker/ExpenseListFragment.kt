@@ -1,4 +1,4 @@
-package com.bignerdranch.android.criminalintent
+package com.bignerdranch.android.expensetracker
 
 import android.app.DatePickerDialog
 import android.icu.util.Calendar
@@ -16,10 +16,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bignerdranch.android.criminalintent.databinding.FragmentExpenseListBinding
+import com.bignerdranch.android.expensetracker.databinding.FragmentExpenseListBinding
 import kotlinx.coroutines.launch
 
-private const val TAG = "CrimeListFragment"
+private const val TAG = "ExpenseListFragment"
 
 class ExpenseListFragment : Fragment() {
 
@@ -32,10 +32,14 @@ class ExpenseListFragment : Fragment() {
     private val expenseListViewModel: ExpenseListViewModel by viewModels()
 
     val typeToIntMap = mapOf(
-        "Theft" to 0,
-        "Assault" to 1,
-        "Vandalism" to 2,
-        "Burglary" to 3
+        //Food, Entertainment, Housing, Utilities, Fuel, Automotive, Misc
+        "Food" to 0,
+        "Entertainment" to 1,
+        "Housing" to 2,
+        "Utilities" to 3,
+        "Fuel" to 4,
+        "Automotive" to 5,
+        "Misc" to 6
     )
 
 
@@ -54,7 +58,7 @@ class ExpenseListFragment : Fragment() {
             Toast.makeText(requireContext(), "Button clicked", Toast.LENGTH_SHORT).show()
             expenseListViewModel.addEmptyCrime { newID ->
                 // Handle the newly inserted crime with its UUID
-                Log.d("Crime added", "UUID: $newID")
+                Log.d("Expense added", "UUID: $newID")
                 // Now you can use the newID as needed
                 findNavController().navigate(
                     ExpenseListFragmentDirections.showCrimeDetail(newID)
@@ -95,8 +99,8 @@ class ExpenseListFragment : Fragment() {
 
                     binding.spinnerTypeFilter.setSelection(0)
                     val endTime = selectedDate.time
-                    val adapter = binding.crimeRecyclerView.adapter as? CrimeListAdapter
-                    (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.filterByDate(startTime,endTime)
+                    val adapter = binding.crimeRecyclerView.adapter as? ExpenseListAdapter
+                    (binding.crimeRecyclerView.adapter as? ExpenseListAdapter)?.filterByDate(startTime,endTime)
                 },
                 year,
                 month,
@@ -110,11 +114,11 @@ class ExpenseListFragment : Fragment() {
                 val selectedType = parent?.getItemAtPosition(position).toString()
 
                 // Call a function to filter data based on the selected type
-                val adapter = binding.crimeRecyclerView.adapter as? CrimeListAdapter
+                val adapter = binding.crimeRecyclerView.adapter as? ExpenseListAdapter
                 if(selectedType=="All"){
-                    (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.removeFilter()
+                    (binding.crimeRecyclerView.adapter as? ExpenseListAdapter)?.removeFilter()
                 }else{
-                    (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.filterByType(typeToIntMap[selectedType]?:0)
+                    (binding.crimeRecyclerView.adapter as? ExpenseListAdapter)?.filterByType(typeToIntMap[selectedType]?:0)
                 }
 
             }
@@ -126,8 +130,8 @@ class ExpenseListFragment : Fragment() {
 
         binding.clearFilter.setOnClickListener {
             binding.textInputDate.setText("") // Set the text to empty string
-            val adapter = binding.crimeRecyclerView.adapter as? CrimeListAdapter
-            (binding.crimeRecyclerView.adapter as? CrimeListAdapter)?.removeFilter()
+            val adapter = binding.crimeRecyclerView.adapter as? ExpenseListAdapter
+            (binding.crimeRecyclerView.adapter as? ExpenseListAdapter)?.removeFilter()
             binding.spinnerTypeFilter.setSelection(0)
         }
 
@@ -141,7 +145,7 @@ class ExpenseListFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 expenseListViewModel.crimes.collect { crimes ->
                     binding.crimeRecyclerView.adapter =
-                        CrimeListAdapter(crimes) { crimeId ->
+                        ExpenseListAdapter(crimes) { crimeId ->
                             findNavController().navigate(
                                 ExpenseListFragmentDirections.showCrimeDetail(crimeId)
                             )
